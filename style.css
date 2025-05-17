@@ -5,8 +5,10 @@
 
 /* --- Variables (Optional but good practice) --- */
 :root {
+  --hue: 223;
+  --bg: hsl(var(--hue),10%,90%);
   --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --color-bg-base: #F3F4F6; /* Light Gray */
+  --color-bg-base: var(--bg); /* Use the same as --bg for consistency */
   --color-bg-container: #FFFFFF; /* White */
   --color-text-primary: #374151; /* Dark Gray */
   --color-text-secondary: #6B7280; /* Medium Gray */
@@ -31,7 +33,7 @@ body {
   font-size: 14px;
   line-height: 1.6; /* Slightly increased line-height */
   color: var(--color-text-primary);
-  background-color: var(--color-bg-base);
+  background-color: var(--bg);
   width: 450px; /* Increased width */
   min-height: 350px; /* Adjusted min-height */
   padding: 0;
@@ -337,6 +339,22 @@ body {
   color: var(--color-text-primary);
   display: block;
   margin-bottom: calc(var(--spacing-unit) * 0.5); /* 4px */
+}
+/* Style extension name link */
+.extension-info strong a {
+  display: inline-block;
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: calc(var(--spacing-unit) * 0.25) calc(var(--spacing-unit) * 0.5);
+  border-radius: var(--border-radius-soft);
+  background-color: var(--color-bg-container);
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.extension-info strong a:hover {
+  background-color: var(--color-accent);
+  color: #fff;
 }
 .extension-id {
   font-size: 0.8em; /* ~11.2px */
@@ -752,7 +770,223 @@ body {
 /* Remove old SVG toggle parts if they exist */
 .switch__letters { display: none; }
 
-/* --- Scrollbar (Optional Subtle Styling) --- */
+/* Match dark theme background to switch */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: hsl(var(--hue),10%,10%);
+    --color-bg-base: var(--bg);
+    --color-bg-container: hsl(var(--hue),10%,18%);
+    --color-text-primary: hsl(var(--hue),10%,90%);
+    --color-text-secondary: hsl(var(--hue),10%,65%);
+    --color-border-subtle: hsl(var(--hue),10%,25%);
+    --color-accent: hsl(var(--hue),90%,60%);
+    --color-accent-hover: hsl(var(--hue),90%,70%);
+    --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.6), 0 2px 4px -2px rgba(0,0,0,0.5);
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--color-text-primary);
+  }
+  .app-header,
+  .container,
+  #extension-list li,
+  #bookmarks-tree-container {
+    background-color: var(--color-bg-container);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .tab-content-area {
+    background: none;
+  }
+  .button,
+  .button-secondary,
+  .button-primary,
+  .button-purple {
+    background-color: hsl(var(--hue),10%,22%);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-subtle);
+    box-shadow: var(--shadow-sm);
+  }
+  .button-primary {
+    background-color: var(--color-accent);
+    color: #fff;
+  }
+  .button-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-hover);
+  }
+  .button-secondary:hover:not(:disabled) {
+    background-color: hsl(var(--hue),10%,28%);
+  }
+  .status-badge,
+  .not-installed-badge,
+  .disabled-badge {
+    background-color: hsl(var(--hue),10%,22%);
+    color: var(--color-text-primary);
+  }
+  .extension-actions .uninstall-button {
+    background-color: #3a2323;
+    color: #ffb3b3;
+    border-color: #5a2a2a;
+  }
+  .extension-actions .uninstall-button:hover:not(:disabled) {
+    background-color: #5a2a2a;
+    color: #fff;
+  }
+  .extension-actions .remove-button {
+    background-color: hsl(var(--hue),10%,22%);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border-subtle);
+  }
+  .extension-actions .remove-button:hover:not(:disabled) {
+    background-color: hsl(var(--hue),10%,28%);
+    color: var(--color-text-primary);
+  }
+  .extension-actions .install-button {
+    background-color: #1e4d2b;
+    color: #b6ffb6;
+    border-color: #2e7d32;
+  }
+  .extension-actions .install-button:hover:not(:disabled) {
+    background-color: #2e7d32;
+    color: #fff;
+  }
+  /* Scrollbar for dark mode */
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--hue),10%,15%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--hue),10%,30%);
+    border: 2px solid hsl(var(--hue),10%,15%);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--hue),10%,40%);
+  }
+}
+
+/* --- Extension Toggle: Animated Power Switch Styles --- */
+.extension-actions .switch,
+.extension-actions .switch__input {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+.extension-actions .switch {
+	display: flex;
+	align-items: center;
+	margin: 0;
+}
+.extension-actions .switch__input {
+	background-color: var(--unchecked, hsl(223,10%,70%));
+	border-radius: 0.75em;
+	box-shadow: 0 0 0 0.125em var(--primary-t, hsla(223,90%,50%,0));
+	outline: transparent;
+	position: relative;
+	width: 2.25em;
+	height: 1.5em;
+	transition:
+		background-color var(--trans-dur, 0.4s) var(--trans-timing1, cubic-bezier(0.65,0,0.35,1)),
+		box-shadow 0.15s var(--trans-timing1, cubic-bezier(0.65,0,0.35,1)),
+		transform var(--trans-dur, 0.4s) var(--trans-timing2, cubic-bezier(0.68,-0.6,0.32,1.6));
+	-webkit-appearance: none;
+	appearance: none;
+}
+.extension-actions .switch__input:focus-visible {
+	box-shadow: 0 0 0 0.125em var(--primary, hsl(223,90%,50%));
+}
+.extension-actions .switch__input:before {
+	background-color: var(--bg, hsl(223,10%,90%));
+	border-radius: 50%;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0.25em;
+	left: 0.25em;
+	transition:
+		background-color var(--trans-dur, 0.4s),
+		transform var(--trans-dur, 0.4s) var(--trans-timing2, cubic-bezier(0.68,-0.6,0.32,1.6));
+	width: 1em;
+	height: 1em;
+}
+.extension-actions .switch__letters,
+.extension-actions .switch__letter {
+	transition: transform var(--trans-dur, 0.4s) var(--trans-timing2, cubic-bezier(0.68,-0.6,0.32,1.6));
+}
+.extension-actions .switch__letters {
+	margin-left: 0.375em;
+	overflow: visible;
+	pointer-events: none;
+	width: 1.5em;
+	height: 1.5em;
+	display: block !important;
+}
+.extension-actions .switch__letter:last-child {
+	transform: translateX(14px);
+}
+.extension-actions .switch__letter-stroke {
+	stroke: var(--unchecked, hsl(223,10%,70%));
+	transition:
+		stroke var(--trans-dur, 0.4s) var(--trans-timing1, cubic-bezier(0.65,0,0.35,1)),
+		stroke-dashoffset var(--trans-dur, 0.4s) var(--trans-timing2, cubic-bezier(0.68,-0.6,0.32,1.6)),
+		transform var(--trans-dur, 0.4s) var(--trans-timing2, cubic-bezier(0.68,-0.6,0.32,1.6));
+}
+.extension-actions .switch__letter-stroke:nth-child(2) {
+	transform-origin: 2px 2px;
+}
+.extension-actions .switch__text {
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+}
+
+/* “on” state */
+.extension-actions .switch__input:checked {
+	background-color: var(--checked, hsl(133,70%,40%));
+}
+.extension-actions .switch__input:checked,
+.extension-actions .switch__input:checked + .switch__letters {
+	transform: translateX(0.375em);
+}
+.extension-actions .switch__input:checked:before {
+	transform: translateX(0.75em);
+}
+.extension-actions .switch__input:checked ~ .switch__letters .switch__letter-stroke {
+	stroke: var(--checked, hsl(133,70%,40%));
+}
+.extension-actions .switch__input:checked ~ .switch__letters .switch__letter-stroke:nth-child(2) {
+	stroke-dashoffset: 6;
+}
+.extension-actions .switch__input:checked ~ .switch__letters .switch__letter-stroke:last-child {
+	stroke-dashoffset: 4;
+}
+.extension-actions .switch__input:checked ~ .switch__letters .switch__letter:first-child .switch__letter-stroke:nth-child(2) {
+	stroke-dashoffset: 0;
+	transform: rotate(56.5deg);
+}
+.extension-actions .switch__input:checked ~ .switch__letters .switch__letter:last-child {
+	stroke-dashoffset: 0;
+	transform: translateX(8px);
+}
+
+/* Dark theme for extension toggle */
+@media (prefers-color-scheme: dark) {
+	.extension-actions .switch__input {
+		background-color: var(--unchecked, hsl(223,10%,30%));
+	}
+	.extension-actions .switch__input:checked {
+		background-color: var(--checked, hsl(133,70%,50%));
+	}
+	.extension-actions .switch__input:before {
+		background-color: var(--bg, hsl(223,10%,10%));
+	}
+}
+
+/* Ensure the SVG is visible for extension toggles */
+.extension-actions .switch__letters {
+	display: block !important;
+}
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -811,4 +1045,94 @@ body {
 }
 .delete-bookmark-button:active {
   background: #fecaca;
+}
+
+/* --- Auto Backup Settings Styling --- */
+.auto-backup-settings {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--color-bg-container);
+  border: 1.5px solid #d1d5db;
+  border-radius: var(--border-radius-soft);
+  padding: 14px 18px;
+  margin: 18px 0 10px 0;
+  box-shadow: 0 2px 8px 0 rgba(60, 60, 60, 0.04);
+}
+
+.auto-backup-settings label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0;
+}
+
+.auto-backup-settings input[type="checkbox"] {
+  accent-color: #2563eb;
+  width: 20px;
+  height: 20px;
+  margin: 0 6px 0 0;
+  cursor: pointer;
+}
+
+.auto-backup-settings select {
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 15px;
+  background: #fff;
+  color: #1e293b;
+  margin-left: 4px;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.auto-backup-settings select:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+
+.auto-backup-settings::before {
+  content: "⏰";
+  font-size: 20px;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+/* Slightly lighter background for auto-backup-settings */
+.auto-backup-settings {
+  background-color: #FAFAFA;
+}
+@media (prefers-color-scheme: dark) {
+  .auto-backup-settings {
+    background-color: hsl(var(--hue),10%,22%);
+  }
+}
+
+/* Pantry Cloud Link Styling */
+.pantry-link {
+  color: #4a90e2;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.pantry-link:hover, .pantry-link:focus {
+  color: #357ab8;
+  text-decoration: underline wavy;
+}
+.help-icon.pantry-link {
+  font-size: 1.2em;
+  margin-left: 8px;
+  border-radius: 50%;
+  padding: 0 6px;
+  background: #eaf4fb;
+  border: 1px solid #b3d4fc;
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
+}
+.help-icon.pantry-link:hover, .help-icon.pantry-link:focus {
+  background: #d2e9fa;
+  border-color: #4a90e2;
+  color: #23527c;
 }
