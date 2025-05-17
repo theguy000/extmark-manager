@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Extmark Manager",
+  "version": "1.0",
+  "description": "Extmark Manager is a browser extension that simplifies the way you manage your extensions and bookmarks. It provides a central hub for organizing, accessing, and controlling your browser's extensions and bookmarks, making it easier to customize your browsing experience.",
+  "permissions": [
+    "management",
+    "bookmarks",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icons/main_icon/main.png",
+    "48": "icons/main_icon/main.png",
+    "128": "icons/main_icon/main.png"
+  },
+  "host_permissions": [
+    "https://getpantry.cloud/*"
+  ]
+}

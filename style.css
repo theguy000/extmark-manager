@@ -1,0 +1,814 @@
+/* style.css - Redesigned */
+
+/* --- Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Variables (Optional but good practice) --- */
+:root {
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --color-bg-base: #F3F4F6; /* Light Gray */
+  --color-bg-container: #FFFFFF; /* White */
+  --color-text-primary: #374151; /* Dark Gray */
+  --color-text-secondary: #6B7280; /* Medium Gray */
+  --color-accent: #0D9488; /* Teal */
+  --color-accent-hover: #0F766E; /* Darker Teal */
+  --color-border-subtle: #E5E7EB; /* Lighter Gray for subtle lines if needed */
+  --border-radius-soft: 6px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --spacing-unit: 8px; /* Base unit for padding/margins/gaps */
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  line-height: 1.6; /* Slightly increased line-height */
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-base);
+  width: 450px; /* Increased width */
+  min-height: 350px; /* Adjusted min-height */
+  padding: 0;
+}
+
+/* --- Generic Controls Container --- */
+.controls-row {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: calc(var(--spacing-unit) * 1.5); /* 12px gap between control groups if multiple exist */
+    margin-bottom: calc(var(--spacing-unit) * 2); /* 16px bottom margin */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens if necessary */
+}
+
+/* --- Search + Sort Controls Specific Styling --- */
+.search-controls {
+    display: flex;
+    align-items: center; /* Vertically align input and buttons */
+    gap: calc(var(--spacing-unit) * 1); /* 8px gap between elements */
+    flex-grow: 1; /* Allow search area to take available space */
+    flex-wrap: nowrap; /* Explicitly prevent wrapping within this container */
+}
+
+#extension-search-input,
+#bookmark-search-input {
+    flex-grow: 1; /* Allow input to take up remaining space */
+    padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 1.25); /* ~6.4px 10px */
+    font-size: 0.9em; /* ~12.6px */
+    font-family: inherit;
+    border: 1px solid #D1D5DB; /* Match pantry input */
+    border-radius: var(--border-radius-soft);
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 150px; /* Ensure minimum width */
+}
+#extension-search-input:focus,
+#bookmark-search-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2); /* Teal focus ring */
+}
+
+/* Adjust padding for icon-only buttons in this context */
+.search-controls .button.button-icon { /* Specificity added */
+    padding: calc(var(--spacing-unit) * 0.75); /* 6px square-ish padding - slight adjustment */
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    line-height: 1; /* Ensure icon is centered */
+}
+.search-controls .button.button-icon .icon {
+    margin: 0; /* Remove default icon margins if any */
+}
+
+.container {
+  padding: 0 calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3); /* 0 24px 24px 24px */
+}
+
+/* --- Header --- */
+.app-header {
+  text-align: center;
+  padding: calc(var(--spacing-unit) * 2.5) 0; /* 20px */
+  margin-bottom: 0;
+  background-color: var(--color-bg-container);
+  /* border-bottom: 1px solid var(--color-border-subtle); */ /* Removed border */
+  box-shadow: var(--shadow-sm); /* Added subtle shadow */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header h1 {
+  font-size: 1.25em; /* 20px */
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: calc(var(--spacing-unit) * 1.5); /* 12px */
+}
+
+.action-buttons-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1); /* 8px between rows */
+  margin-bottom: calc(var(--spacing-unit) * 1.5); /* 12px */
+}
+
+#browser-info {
+  font-size: 0.8em; /* 11.2px */
+  font-style: normal; /* Removed italic */
+  color: var(--color-text-secondary);
+  min-height: 1.5em;
+  padding: 0 calc(var(--spacing-unit) * 3); /* 24px - Align with container padding */
+}
+.browser-info-placeholder {
+    min-height: 1.5em;
+}
+
+/* --- Buttons (General) --- */
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-unit); /* 8px */
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2); /* 8px 16px */
+  font-size: 0.9rem; /* ~12.6px */
+  font-weight: 500;
+  font-family: inherit; /* Ensure font is inherited */
+  border: none;
+  border-radius: var(--border-radius-soft);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+.button .icon { width: 1.1em; height: 1.1em; } /* Slightly larger icon */
+.button:hover {
+  /* transform: translateY(-1px); */ /* Removed transform */
+  box-shadow: var(--shadow-md);
+}
+.button:active {
+  /* transform: translateY(0px); */ /* Removed transform */
+  box-shadow: var(--shadow-sm); /* Keep subtle shadow */
+}
+.button:disabled {
+    background-color: #E5E7EB; /* Light gray background */
+    color: #9CA3AF; /* Lighter gray text */
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+}
+.button:disabled:hover {
+    box-shadow: none; /* No shadow change on hover when disabled */
+}
+
+
+/* Primary Button (Teal Accent) */
+.button-primary {
+  background-color: var(--color-accent);
+  color: white;
+}
+.button-primary:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+}
+/* Purple Button (for Export Extensions HTML) */
+.button-purple {
+  background-color: #8B5CF6; /* Purple-500 */
+  color: #fff;
+}
+.button-purple:hover:not(:disabled) {
+  background-color: #7C3AED; /* Purple-600 */
+}
+.button-purple:active:not(:disabled) {
+  background-color: #6D28D9; /* Purple-700 */
+}
+
+/* Secondary Button (Light Gray/White) */
+.button-secondary {
+  background-color: var(--color-bg-container);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle); /* Keep a subtle border */
+  box-shadow: none; /* Remove default shadow for secondary */
+}
+.button-secondary:hover:not(:disabled) {
+  background-color: #F9FAFB; /* Very light gray on hover */
+  border-color: #D1D5DB;
+  box-shadow: var(--shadow-sm); /* Add shadow on hover */
+}
+
+/* Smaller link buttons (Used for Install/Store links) */
+.button-link {
+  padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 1.25); /* 4px 10px */
+  font-size: 0.8rem; /* ~11.2px */
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.install-link { /* Example: Greenish */
+  background-color: #ECFDF5;
+  color: #065F46;
+  border-color: #A7F3D0;
+}
+.install-link:hover {
+  background-color: #D1FAE5;
+  border-color: #6EE7B7;
+}
+.store-link { /* Example: Bluish */
+  background-color: #EFF6FF;
+  color: #1E40AF;
+  border-color: #BFDBFE;
+}
+.store-link:hover {
+  background-color: #DBEAFE;
+  border-color: #93C5FD;
+}
+
+/* --- Tabs --- */
+.tabs {
+  display: flex;
+  /* border-bottom: 1px solid var(--color-border-subtle); */ /* Removed border */
+  margin-bottom: calc(var(--spacing-unit) * 3); /* 24px */
+  background-color: var(--color-bg-container); /* Match header bg */
+  padding: 0 calc(var(--spacing-unit) * 1.5); /* 12px horizontal padding */
+  gap: var(--spacing-unit); /* 8px gap between tabs */
+  position: relative; /* For absolute positioning of active indicator */
+}
+.tabs::after { /* Bottom border line */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: calc(var(--spacing-unit) * 1.5);
+    right: calc(var(--spacing-unit) * 1.5);
+    height: 1px;
+    background-color: var(--color-border-subtle);
+    z-index: 0;
+}
+
+.tab-button {
+  flex-grow: 1;
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 1); /* 12px 8px */
+  font-size: 0.95em; /* ~13.3px */
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  border-bottom: 3px solid transparent; /* Keep for spacing, indicator below */
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  margin-bottom: -1px; /* Overlap the container's bottom border */
+  position: relative; /* For z-index */
+  z-index: 1; /* Ensure button is above the ::after line */
+}
+
+.tab-button:hover {
+  color: var(--color-text-primary);
+}
+
+.tab-button.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  /* border-bottom-color: var(--color-accent); */ /* Replaced with ::before */
+}
+
+.tab-button.active::before { /* Active indicator line */
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Align with bottom border */
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--color-accent);
+    border-radius: 2px 2px 0 0; /* Slightly rounded top corners */
+}
+
+/* --- Tab Content Area --- */
+.tab-content-area {
+  padding-top: 0;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --- Extension List Styling --- */
+#extension-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1.5); /* 12px gap */
+  width: 100%; /* Ensure list spans full container width */
+}
+#extension-list li {
+  background-color: var(--color-bg-container);
+  /* border: 1px solid var(--color-border-subtle); */ /* Removed border */
+  border-radius: var(--border-radius-soft);
+  padding: calc(var(--spacing-unit) * 2); /* 16px */
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1.25); /* 10px */
+  transition: box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%; /* Stretch item to full width */
+}
+#extension-list li:hover {
+  /* border-color: #cccccc; */ /* Removed border */
+  box-shadow: var(--shadow-md);
+}
+.extension-info { flex-grow: 1; }
+.extension-info strong {
+  font-size: 1.05em; /* ~14.7px */
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: block;
+  margin-bottom: calc(var(--spacing-unit) * 0.5); /* 4px */
+}
+.extension-id {
+  font-size: 0.8em; /* ~11.2px */
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: calc(var(--spacing-unit) * 0.75); /* 6px */
+  word-break: break-all;
+}
+.extension-id a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.extension-id a:hover {
+  text-decoration: underline;
+  color: var(--color-accent-hover);
+}
+.extension-detail {
+  font-size: 0.8em; /* ~11.2px */
+  color: var(--color-text-secondary);
+  margin-top: calc(var(--spacing-unit) * 0.5); /* 4px */
+  word-break: break-all;
+}
+.homepage-url a {
+  color: var(--color-accent); /* Use accent color */
+  text-decoration: none;
+}
+.homepage-url a:hover {
+  text-decoration: underline;
+  color: var(--color-accent-hover);
+}
+.extension-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.25); /* 10px */
+  flex-wrap: wrap;
+  padding-top: calc(var(--spacing-unit) * 1.5); /* 12px */
+  border-top: 1px solid var(--color-border-subtle); /* Keep subtle separator */
+  margin-top: calc(var(--spacing-unit) * 1); /* 8px */
+}
+.installed-status { /* Replaced by badge */
+    display: none;
+}
+
+/* Style for Chrome/Edge icons in extension list */
+.extension-source-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle; /* Align icon with text */
+  margin-left: calc(var(--spacing-unit) * 0.75); /* Add some space before the icon */
+  /* Optionally add margin-right if needed */
+}
+
+/* --- Bookmarks Tree Styling --- */
+#bookmarks-tree-container {
+    padding: calc(var(--spacing-unit) * 1.5); /* 12px */
+    background-color: var(--color-bg-container);
+    /* border: 1px solid var(--color-border-subtle); */ /* Removed border */
+    border-radius: var(--border-radius-soft);
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: var(--shadow-sm);
+    width: 100%; /* Ensure bookmarks container spans full width */
+}
+
+.bookmarks-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.bookmarks-list ul { /* Nested lists */
+  list-style: none;
+  padding-left: calc(var(--spacing-unit) * 2.5); /* 20px */
+  display: none; /* Initially collapsed */
+  margin-top: calc(var(--spacing-unit) * 0.5); /* 4px */
+  border-left: 1px solid var(--color-border-subtle); /* Subtle indent line */
+}
+
+.bookmarks-list li {
+  padding: calc(var(--spacing-unit) * 0.5) 0; /* 4px */
+  position: relative;
+}
+
+.bookmark-item.folder > .node-content {
+  font-weight: 500; /* Slightly less bold */
+  color: var(--color-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--spacing-unit) * 0.25) 0; /* 2px */
+}
+
+.bookmark-item.bookmark > .node-content {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--spacing-unit) * 0.25) 0; /* 2px */
+}
+
+
+.bookmark-item a {
+  color: var(--color-accent);
+  text-decoration: none;
+  display: inline-block;
+  padding: 2px 0;
+  word-break: break-word;
+  font-size: 0.95em; /* ~13.3px */
+}
+
+.bookmark-item a:hover {
+  text-decoration: underline;
+  color: var(--color-accent-hover);
+}
+
+/* Folder Toggle */
+.folder-toggle {
+  display: inline-block;
+  width: 1.2em; /* Slightly wider */
+  height: 1.2em;
+  margin-right: calc(var(--spacing-unit) * 0.75); /* 6px */
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s ease;
+  text-align: center;
+  line-height: 1.2em;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.folder-toggle::before {
+  content: '▶';
+  display: inline-block;
+  font-size: 0.7em; /* Smaller icon */
+}
+
+.bookmark-item.folder.open > .node-content > .folder-toggle {
+  transform: rotate(90deg);
+}
+.bookmark-item.folder.open > ul {
+    display: block;
+}
+
+/* Favicon placeholder */
+.favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: calc(var(--spacing-unit) * 0.75); /* 6px */
+    vertical-align: middle;
+    flex-shrink: 0;
+    background-color: #E5E7EB; /* Use subtle border color */
+    display: inline-block;
+    border-radius: 3px; /* Softer radius */
+}
+
+/* --- Input File (Keep Hidden) --- */
+#import-file { display: none; }
+
+/* --- Loading/Empty States --- */
+.loading-text, .empty-text {
+    font-style: normal; /* Removed italic */
+    color: var(--color-text-secondary);
+    padding: calc(var(--spacing-unit) * 3); /* 24px */
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* --- Online Backup Tab --- */
+.backup-controls {
+    display: none; /* Hidden by default; shown via JS when active */
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 2) 0; /* 16px top/bottom */
+    margin-top: calc(var(--spacing-unit) * 1); /* 8px */
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 2); /* 16px */
+}
+
+.pantry-id-row,
+.backup-actions-row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5); /* 12px */
+    flex-wrap: wrap; /* Allow wrapping */
+}
+#backup-tab-content { /* Container for backup section */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: calc(var(--spacing-unit) * 1.5); /* 12px */
+    padding: calc(var(--spacing-unit) * 1) 0; /* 8px */
+}
+
+#backup-tab-content label {
+    /* flex-basis: 100%; */ /* No longer needed in column layout */
+    margin-bottom: calc(var(--spacing-unit) * -0.5); /* -4px */
+    font-weight: 500;
+    color: var(--color-text-primary);
+    font-size: 0.9em;
+}
+
+#pantry-id-input {
+    flex-grow: 1;
+    min-width: 180px;
+    padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.5); /* 8px 12px */
+    font-size: 0.95em;
+    font-family: inherit;
+    border: 1px solid #D1D5DB; /* Slightly darker border */
+    border-radius: var(--border-radius-soft);
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#pantry-id-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2); /* Teal focus ring */
+}
+
+
+/* Buttons use existing .button styles */
+#save-pantry-id-button {
+    flex-shrink: 0;
+}
+#manual-backup-button {
+     flex-shrink: 0;
+     /* Use default button styles now */
+}
+#restore-from-pantry-btn {
+    flex-shrink: 0;
+    /* Uses .button-primary */
+}
+
+#backup-help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+    background-color: #E5E7EB; /* Lighter gray */
+    border: none; /* Removed border */
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: calc(var(--spacing-unit) * 0.5); /* 4px */
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+#backup-help-icon:hover {
+    background-color: #D1D5DB; /* Darker gray */
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+#backup-status {
+    font-size: 0.85em;
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-unit);
+    min-height: 1.5em; /* Placeholder space */
+}
+
+/* --- Extension Item States & New Buttons --- */
+
+/* Style for items marked as not installed */
+#extension-list li.not-installed {
+  opacity: 0.8; /* Slightly less faded */
+  background-color: #F9FAFB; /* Very light gray */
+}
+
+#extension-list li.not-installed .extension-info strong {
+  color: var(--color-text-secondary); /* Use secondary text color */
+}
+
+/* Status Badge (e.g., "Not Installed") */
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px; /* Increased padding */
+    font-size: 0.75rem; /* ~10.5px */
+    font-weight: 500; /* Medium weight */
+    border-radius: 12px; /* Pill shape */
+    margin-left: var(--spacing-unit); /* 8px */
+    vertical-align: middle;
+    line-height: 1.2; /* Adjust line height */
+}
+
+.not-installed-badge {
+    background-color: #E5E7EB; /* Light Gray */
+    color: #4B5563; /* Darker Gray Text */
+}
+.disabled-badge {
+    background-color: #E5E7EB; /* Match Not Installed: Light Gray */
+    color: #4B5563; /* Match Not Installed: Darker Gray Text */
+}
+
+/* Style for the new action buttons within extension items */
+.extension-actions .button {
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5); /* 6px 12px */
+    font-size: 0.8rem; /* ~11.2px */
+    box-shadow: none; /* Remove shadow from small action buttons by default */
+}
+.extension-actions .button:hover:not(:disabled) {
+    box-shadow: var(--shadow-sm); /* Add shadow on hover */
+}
+
+/* Uninstall Button (Reddish) */
+.extension-actions .uninstall-button {
+    background-color: #FEF2F2; /* Lighter Red */
+    color: #DC2626; /* Red */
+    border: 1px solid #FECACA; /* Light Red Border */
+}
+.extension-actions .uninstall-button:hover:not(:disabled) {
+    background-color: #FEE2E2;
+    border-color: #FCA5A5;
+    color: #B91C1C; /* Darker Red */
+}
+
+/* Remove Button (X - Grayish) */
+.extension-actions .remove-button {
+    background-color: #F3F4F6; /* Light Gray */
+    color: #4B5563; /* Darker Gray */
+    border: 1px solid #E5E7EB;
+    font-weight: 600; /* Bolder X */
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1); /* 6px 8px */
+    line-height: 1;
+}
+.extension-actions .remove-button:hover:not(:disabled) {
+    background-color: #E5E7EB;
+    border-color: #D1D5DB;
+    color: #1F2937; /* Even Darker Gray */
+}
+
+/* Install Button (Uses .button-link style - Greenish) */
+.extension-actions .install-button {
+    /* Inherits from .button-link and .install-link */
+    /* Add specific overrides if needed */
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5); /* Match other action buttons */
+    font-size: 0.8rem;
+    border-radius: var(--border-radius-soft); /* Match other buttons */
+}
+.extension-actions .install-button.disabled {
+    background-color: #E5E7EB;
+    color: #9CA3AF;
+    border-color: #E5E7EB;
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
+}
+.extension-actions .install-button.disabled:hover {
+    /* No hover effect */
+    background-color: #E5E7EB;
+    color: #9CA3AF;
+    border-color: #E5E7EB;
+}
+
+
+/* --- Toggle Switch Styles (Simplified & Themed) --- */
+.switch {
+	display: inline-flex; /* Use inline-flex for better alignment */
+	align-items: center;
+	vertical-align: middle; /* Align with text/buttons */
+	-webkit-tap-highlight-color: transparent;
+    gap: calc(var(--spacing-unit) * 0.75); /* 6px gap if label is used */
+}
+.switch__label { /* Optional label style */
+    font-size: 0.9em;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+.switch__input {
+	appearance: none;
+	background-color: #E5E7EB; /* Default off background (Light Gray) */
+	border-radius: 1em; /* Pill shape */
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); /* Subtle inset shadow */
+	cursor: pointer;
+	height: 1.25em; /* 20px */
+	outline: transparent;
+	position: relative;
+	transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease;
+	width: 2.25em; /* 36px */
+	vertical-align: middle; /* Align knob vertically */
+}
+.switch__input:before { /* The knob */
+	background-color: #fff; /* White knob */
+	border-radius: 50%;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Knob shadow */
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0.125em; /* 2px */
+	left: 0.125em; /* 2px */
+	transition: transform 0.2s ease-in-out;
+	width: 1em; /* 16px */
+	height: 1em; /* 16px */
+}
+.switch__input:checked {
+	background-color: var(--color-accent); /* Teal when checked */
+}
+.switch__input:checked:before {
+	transform: translateX(1em); /* Move knob to the right */
+}
+.switch__input:focus-visible {
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 0 0 2px rgba(13, 148, 136, 0.3); /* Teal focus ring */
+}
+.switch__input:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: #E5E7EB;
+}
+.switch__input:disabled:before {
+    background-color: #F3F4F6;
+}
+.switch__input:disabled:checked {
+    background-color: #A7F3D0; /* Lighter teal when disabled but checked */
+}
+
+/* Remove old SVG toggle parts if they exist */
+.switch__letters { display: none; }
+
+/* --- Scrollbar (Optional Subtle Styling) --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F3F4F6; /* Match light gray background */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #D1D5DB; /* Medium gray handle */
+  border-radius: 4px;
+  border: 2px solid #F3F4F6; /* Creates padding around thumb */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9CA3AF; /* Darker gray on hover */
+}
+/* Install Button Styling */
+.install-button {
+  background-color: #4CAF50; /* Green */
+  color: white; /* Ensure text is readable */
+}
+
+.install-button:hover:not([disabled]),
+.install-button:active:not([disabled]) {
+  background-color: #45a049; /* Darker Green */
+}
+
+/* Keep disabled state visually distinct */
+.install-button.disabled {
+  background-color: #cccccc; /* Grey background for disabled */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+/* --- .sort-controls rule removed as it's no longer needed --- */
+
+/* Delete Bookmark Button Styles */
+.delete-bookmark-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  margin-left: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.delete-bookmark-button .icon {
+  width: 1.1em;
+  height: 1.1em;
+  filter: grayscale(0.2);
+}
+.delete-bookmark-button:hover,
+.delete-bookmark-button:focus {
+  background: #fee2e2;
+}
+.delete-bookmark-button:active {
+  background: #fecaca;
+}
