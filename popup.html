@@ -20,7 +20,7 @@
               <title id="extensionIconTitle">Extension</title>
               <path d="M9 4C9 2.89543 9.89543 2 11 2C12.1046 2 13 2.89543 13 4V6H18V11H20C21.1046 11 22 11.8954 22 13C22 14.1046 21.1046 15 20 15H18V20H13V18C13 16.8954 12.1046 16 11 16C9.89543 16 9 16.8954 9 18V20H4V15H6C7.10457 15 8 14.1046 8 13C8 11.8954 7.10457 11 6 11H4V6H9V4Z"></path>
             </svg>
-            Export Extensions (HTML)
+            Export Booksmarks (HTML)
           </button>
         </div>
         <div style="display: flex; gap: 16px; justify-content: center;">
@@ -86,15 +86,28 @@
       <section id="backup-tab-content" class="tab-content">
         <div class="backup-controls">
           <div class="pantry-id-row">
-            <label for="pantry-id-input">Pantry ID:</label>
+            <label for="pantry-id-input">
+              <a href="https://getpantry.cloud/" class="pantry-link" target="_blank" rel="noopener noreferrer">Pantry ID:</a>
+            </label>
             <input type="text" id="pantry-id-input" placeholder="Enter your Pantry ID">
             <button id="save-pantry-id-button" class="button button-primary">Save Pantry ID</button>
           </div>
           <div class="backup-actions-row">
             <button id="manual-backup-button" class="button button-secondary">Manual Backup </button>
             <button id="restore-from-pantry-btn" class="button button-primary">Restore from Pantry</button> <!-- Added Restore Button -->
-            <span id="backup-help-icon" class="help-icon" title="Go to https://getpantry.cloud/, create an account, find your Pantry ID, and paste it here. Click Save. Then click 'Manual Backup' to sync your data. Click 'Restore from Pantry' to load data from the cloud.">?</span>
+            <a id="backup-help-icon" class="help-icon pantry-link" href="https://getpantry.cloud/" target="_blank" rel="noopener noreferrer" title="Go to https://getpantry.cloud/, create an account, find your Pantry ID, and paste it here. Click Save. Then click 'Manual Backup' to sync your data. Click 'Restore from Pantry' to load data from the cloud.">?</a>
           </div>
+        </div>
+        <div class="auto-backup-settings" style="margin-top:10px;">
+          <label for="auto-backup-toggle">Enable Auto Backup:</label>
+          <input type="checkbox" id="auto-backup-toggle">
+          <label for="backup-interval-select" style="margin-left:10px;">Interval:</label>
+          <select id="backup-interval-select">
+            <option value="300000">5 minutes</option>
+            <option value="900000">15 minutes</option>
+            <option value="1800000">30 minutes</option>
+            <option value="3600000">1 hour</option>
+          </select>
         </div>
         <p id="backup-status"></p> <!-- To show backup status messages -->
       </section>

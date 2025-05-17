@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const browserInfoElement = document.getElementById('browser-info');
   const restorePantryButton = document.getElementById('restore-from-pantry-btn');
 
+  // Auto Backup UI elements
+  const autoBackupToggle = document.getElementById('auto-backup-toggle');
+  const backupIntervalSelect = document.getElementById('backup-interval-select');
+  let autoBackupTimerId = null;
+
   // Search elements
   const extensionSearchInput = document.getElementById('extension-search-input');
   const extensionSearchButton = document.getElementById('extension-search-button');
@@ -175,4 +180,87 @@ document.addEventListener('DOMContentLoaded', function() {
       handlePantryRestore(restorePantryButton, extensionList, bookmarksTreeContainer, switchTabWrapper, currentBrowserName)
     );
   }
+  // --- Auto Backup Logic ---
+  // Import the backup handler dynamically to avoid circular dependency
+  let performManualBackupHandler = null;
+  import('./components/backup-handler.js').then(mod => {
+    performManualBackupHandler = mod.performManualBackup;
+  });
+
+  // Helper to start auto backup timer
+  function startAutoBackup(interval, browserName) {
+    if (autoBackupTimerId) clearInterval(autoBackupTimerId);
+    autoBackupTimerId = setInterval(async () => {
+      if (performManualBackupHandler) {
+        const result = await performManualBackupHandler(browserName);
+        // Optionally show status in UI
+        const statusElem = document.getElementById('backup-status');
+        if (statusElem) {
+          statusElem.textContent = result.success ? 'Auto backup successful!' : result.message;
+          statusElem.style.color = result.success ? '#1a7f37' : '#b91c1c';
+          statusElem.style.fontWeight = 'bold';
+          statusElem.style.marginTop = '10px';
+        }
+      }
+    }, interval);
+  }
+
+  // Helper to stop auto backup timer
+  function stopAutoBackup() {
+    if (autoBackupTimerId) {
+      clearInterval(autoBackupTimerId);
+      autoBackupTimerId = null;
+    }
+  }
+
+  // Load auto backup settings from storage
+  function loadAutoBackupSettings() {
+    chrome.storage.local.get(['autoBackupEnabled', 'autoBackupInterval'], (result) => {
+      const enabled = result.autoBackupEnabled ?? false;
+      const interval = result.autoBackupInterval ?? 300000; // default 5 min
+      if (autoBackupToggle) autoBackupToggle.checked = enabled;
+      if (backupIntervalSelect) backupIntervalSelect.value = String(interval);
+
+      if (enabled && performManualBackupHandler) {
+        startAutoBackup(interval, currentBrowserName);
+      }
+    });
+  }
+
+  // Save auto backup settings to storage
+  function saveAutoBackupSettings(enabled, interval) {
+    chrome.storage.local.set({
+      autoBackupEnabled: enabled,
+      autoBackupInterval: interval
+    });
+  }
+
+  // Event listeners for auto backup controls
+  if (autoBackupToggle && backupIntervalSelect) {
+    autoBackupToggle.addEventListener('change', () => {
+      const enabled = autoBackupToggle.checked;
+      const interval = Number(backupIntervalSelect.value);
+      saveAutoBackupSettings(enabled, interval);
+      if (enabled) {
+        startAutoBackup(interval, currentBrowserName);
+      } else {
+        stopAutoBackup();
+      }
+    });
+
+    backupIntervalSelect.addEventListener('change', () => {
+      const enabled = autoBackupToggle.checked;
+      const interval = Number(backupIntervalSelect.value);
+      saveAutoBackupSettings(enabled, interval);
+      if (enabled) {
+        startAutoBackup(interval, currentBrowserName);
+      } else {
+        stopAutoBackup();
+      }
+    });
+  }
+
+  // On load, restore settings and start timer if needed
+  setTimeout(loadAutoBackupSettings, 300); // Delay to ensure handler is loaded
+
 });

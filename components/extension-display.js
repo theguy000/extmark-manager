@@ -154,10 +154,10 @@ function createExtensionListItem(ext, isInstalled, isEnabled, currentContextBrow
 
   let storeUrl = getStoreUrl(ext, currentContextBrowserName);
 
-  let detailsHtml = '';
-  if (ext.homepageUrl) {
-    detailsHtml += `<div class="extension-detail homepage-url">Homepage: <a href="${ext.homepageUrl}" target="_blank" title="${ext.homepageUrl}">${ext.homepageUrl}</a></div>`;
-  }
+  // let detailsHtml = '';
+  // if (ext.homepageUrl) {
+  //   detailsHtml += `<div class="extension-detail homepage-url">Homepage: <a href="${ext.homepageUrl}" target="_blank" title="${ext.homepageUrl}">${ext.homepageUrl}</a></div>`;
+  // }
 
   // Determine initial state for toggle
   const isChecked = isInstalled && isEnabled;
@@ -197,8 +197,7 @@ function createExtensionListItem(ext, isInstalled, isEnabled, currentContextBrow
 
   listItem.innerHTML = `
     <div class="extension-info">
-      <strong>${ext.name}</strong>${sourceIconHtml} ${!isInstalled ? '<span class="status-badge not-installed-badge">(Not Installed)</span>' : (isEnabled ? '' : '<span class="status-badge disabled-badge">(Disabled)</span>')}
-      ${detailsHtml}
+      <strong><a href="${ext.homepageUrl || storeUrl}" target="_blank" title="${ext.homepageUrl || storeUrl}">${ext.name}</a></strong>${sourceIconHtml} ${!isInstalled ? '<span class="status-badge not-installed-badge">(Not Installed)</span>' : (isEnabled ? '' : '<span class="status-badge disabled-badge">(Disabled)</span>')}
     </div>
     <div class="extension-actions">
       ${toggleHtml} <!-- Add the toggle switch here -->
